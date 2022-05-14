@@ -6,12 +6,13 @@ FROM node
 WORKDIR /app
 #tells docker to execute all the commands from the /app directory
 
-COPY . /app
-#this specifies that all the project files should be copied onto the /app directory of the docker container
+COPY package.json /app
 
 RUN npm install
 #asks docker to run npm install on the /app directory
 
+COPY . /app
+#this specifies that all the project files should be copied onto the /app directory of the docker container
 
 
 # --- All of these are run at the time of starting of a container
