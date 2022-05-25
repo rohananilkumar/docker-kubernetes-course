@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: second-app-deployment
+  labels:
+    group: example
+
+spec:
+  replicas: 1
+  selector:
+  matchExpressions:
+    - { key: app, operator: In, values: [second-app, first-app] }
+
+  template:
+    metadata:
+      labels:
+        app: second-app
+        tier: backend
+    spec:
+      containers:
+        - name: second-node
+          image: rohananilkumar/kub-first-app
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              #httpHeaders:
+            periodSeconds: 10
+            initialDelaySeconds: 5
+      #we could give more containers with nore name image pairs but we're not gonna do that here

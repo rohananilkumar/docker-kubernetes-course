@@ -1,0 +1,50 @@
+apiVersion: v1
+#here v1 is enough for service yaml
+kind: Service
+
+metadata:
+  name: backend
+
+spec:
+  selector:
+    #make sure to give the labels of the pods that we need the service to attach to here
+    app: second-app
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+# get from kubernetes website
+
+kind: Deployment
+# service/jobs are other options
+
+metadata:
+  name: second-app-deployment
+  # this is just the name of the deployment
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+      tier: backend
+      #give the labels of the pods here that this deployment have to manage (template metadata labels below)
+
+  # number of running pods
+  template:
+    #here we're going to set the details of the pod
+    metadata:
+      labels:
+        app: second-app
+        tier: backend
+        #this key value pair is user defined
+    spec:
+      #specification of the pods to be created
+      containers:
+        - name: second-node
+          image: rohananilkumar/kub-first-app
+      #we could give more containers with nore name image pairs but we're not gonna do that here
