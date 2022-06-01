@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+    # Capacity of the volume allowed
+  volumeMode: Filesystem #Or block storage
+  storageClassName: standard # this is kubectl specific
+  accessModes:
+    - ReadWriteOnce #Read write but claimed by one node
+    # - ReadOnlyMany #Read only but can be claimed by many nodes
+    # - ReadWriteMany #Read write and can be claimed by many nodes
+  hostPath:
+    #Type of the volume is hostPath
+    path: /data
+    type: DirectoryOrCreate
